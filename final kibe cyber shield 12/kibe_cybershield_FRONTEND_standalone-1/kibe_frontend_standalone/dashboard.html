@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Kibe CyberShield</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+<div id="flashMessages" style="display:none;"></div>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--c-bg);">
+  <div style="text-align:center;">
+    <div style="width:60px;height:60px;margin:0 auto 24px;"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/><path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="spinner" style="margin:0 auto 16px;width:32px;height:32px;border-width:3px;"></div>
+    <p style="color:var(--c-text2);font-family:var(--font-mono);font-size:0.85rem;">Redirecting to your dashboard…</p>
+  </div>
+</div>
+<script>
+  // Route user to their role-specific dashboard
+  (function() {
+    const auth = sessionStorage.getItem('kcs_auth');
+    const user = JSON.parse(sessionStorage.getItem('kcs_user') || 'null');
+    if (!auth || !user) {
+      window.location.href = 'login.html';
+      return;
+    }
+    const map = { admin: 'admin.html', staff: 'staff.html', client: 'client.html' };
+    setTimeout(() => {
+      window.location.href = map[user.role] || 'login.html';
+    }, 600);
+  })();
+</script>
+
+
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

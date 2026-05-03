@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services — Kibe CyberShield Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+{%- with messages = get_flashed_messages(with_categories=true) %}
+{%- if messages %}
+<div id="flashMessages" style="position:fixed;top:80px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:380px;">
+  {%- for category, message in messages %}
+  <div class="alert alert-{{ category }}" style="box-shadow:0 8px 32px rgba(0,0,0,0.4);padding:12px 16px;border-radius:8px;font-size:0.875rem;">{{ message }}</div>
+  {%- endfor %}
+</div>
+<script>setTimeout(function(){var el=document.getElementById('flashMessages');if(el){el.style.opacity='0';el.style.transition='opacity 0.5s';setTimeout(function(){el.remove();},500);}},4000);</script>
+{%- endif %}
+{%- endwith %}
+
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="{{ url_for('index') }}" class="nav-brand">
+      <div class="brand-icon"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/><path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="brand-name">Kibe<span class="accent">Cyber</span>Shield</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+      <a href="{{ url_for('services') }}" class="nav-link active">Services</a>
+      <a href="{{ url_for('about') }}" class="nav-link">About</a>
+      <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+      <a href="{{ url_for('login') }}" class="nav-btn-outline">Login</a>
+      <a href="{{ url_for('register') }}" class="nav-btn-solid">Get Started</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <span class="section-tag">What We Offer</span>
+  <h1>Our Services</h1>
+  <p>Comprehensive cybersecurity and technology services tailored for businesses, governments, and individuals across East Africa.</p>
+</div>
+
+<!-- SERVICES FULL -->
+<section class="section">
+  <div class="container">
+
+    <!-- CYBERSECURITY PROTECTION -->
+    <div id="protection" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-2xl);align-items:center;margin-bottom:80px;">
+      <div>
+        <div class="service-icon icon-cyan" style="margin-bottom:var(--gap-lg);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h2 style="font-family:var(--font-head);font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:var(--gap-md);">Cybersecurity Protection</h2>
+        <p style="color:var(--c-text2);margin-bottom:var(--gap-lg);">Enterprise-grade multi-layered defense infrastructure protecting your systems from advanced persistent threats, zero-day exploits, and targeted attacks.</p>
+        <ul class="why-list">
+          <li><span class="check">✓</span> Network perimeter defense & firewall management</li>
+          <li><span class="check">✓</span> Endpoint detection and response (EDR)</li>
+          <li><span class="check">✓</span> Zero-trust architecture implementation</li>
+          <li><span class="check">✓</span> Vulnerability assessment & penetration testing</li>
+          <li><span class="check">✓</span> Security information and event management (SIEM)</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="btn-primary" style="margin-top:var(--gap-lg);">Get Protected</a>
+      </div>
+      <div class="terminal">
+        <div class="terminal-bar"><span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span><span class="t-title">defense-monitor.sh</span></div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-green">[OK]</span> Firewall: Active (247 rules)</div>
+          <div class="t-line"><span class="t-green">[OK]</span> IDS/IPS: Monitoring</div>
+          <div class="t-line"><span class="t-cyan">[INFO]</span> Endpoints secured: 1,247</div>
+          <div class="t-line"><span class="t-red">[BLOCK]</span> 14 threats neutralized today</div>
+          <div class="t-line"><span class="t-green">[OK]</span> Zero-trust policies: Enforced</div>
+          <div class="t-line"><span class="t-cyan">[INFO]</span> Last scan: 2 min ago</div>
+          <div class="t-line t-blink"><span class="t-green">$</span> <span class="cursor">_</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES CARDS GRID -->
+    <div class="services-grid" style="margin-bottom:80px;">
+
+      <div id="monitoring" class="service-card">
+        <div class="service-icon icon-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+        <h3>Threat Monitoring</h3>
+        <p>AI-powered 24/7 Security Operations Center (SOC) with real-time threat detection, correlation, and automated response playbooks.</p>
+        <ul style="margin:var(--gap-md) 0;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Real-time log analysis</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Anomaly detection via ML</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Automated alert triage</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="card-link">Start monitoring →</a>
+      </div>
+
+      <div id="response" class="service-card">
+        <div class="service-icon icon-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg></div>
+        <h3>Incident Response</h3>
+        <p>Rapid containment and recovery by certified incident responders. Average response time under 60 seconds for critical threats.</p>
+        <ul style="margin:var(--gap-md) 0;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> &lt;60s critical response SLA</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Malware containment</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Post-incident forensics</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="card-link">Get response coverage →</a>
+      </div>
+
+      <div id="network" class="service-card">
+        <div class="service-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div>
+        <h3>Network Defense</h3>
+        <p>Complete network architecture security — from perimeter firewalls to internal segmentation and secure remote access solutions.</p>
+        <ul style="margin:var(--gap-md) 0;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Next-gen firewall deployment</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Network segmentation</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Secure VPN & SD-WAN</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="card-link">Secure your network →</a>
+      </div>
+
+      <div id="cloud" class="service-card">
+        <div class="service-icon icon-yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg></div>
+        <h3>Cloud Security</h3>
+        <p>Zero-trust cloud security frameworks for AWS, Azure, and GCP. Continuous compliance monitoring and cloud workload protection.</p>
+        <ul style="margin:var(--gap-md) 0;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Cloud security posture mgmt</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> IAM & access controls</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Data encryption at rest/transit</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="card-link">Secure your cloud →</a>
+      </div>
+
+      <div id="data" class="service-card">
+        <div class="service-icon icon-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <h3>Data Protection</h3>
+        <p>Comprehensive data loss prevention (DLP), encryption, and compliance management for GDPR, Kenya Data Protection Act, and more.</p>
+        <ul style="margin:var(--gap-md) 0;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> DLP policy enforcement</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Regulatory compliance audits</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Encrypted backup solutions</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="card-link">Protect your data →</a>
+      </div>
+
+      <div id="forensics" class="service-card">
+        <div class="service-icon icon-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v11m0 0h10m-10 0a2 2 0 002 2h8a2 2 0 002-2m-10 0V9m10 5V9m0 0H9"/></svg></div>
+        <h3>Digital Forensics</h3>
+        <p>Court-admissible digital evidence collection, malware reverse engineering, and cyber crime investigation support for law enforcement.</p>
+        <ul style="margin:var(--gap-md) 0;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Evidence acquisition & chain of custody</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Memory & disk forensics</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Expert witness reporting</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="card-link">Start investigation →</a>
+      </div>
+
+      <div id="software" class="service-card">
+        <div class="service-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h3>Software Development</h3>
+        <p>Secure-by-design web and mobile application development with built-in security testing, code reviews, and OWASP compliance.</p>
+        <ul style="margin:var(--gap-md) 0;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Secure SDLC practices</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Web & mobile apps</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> DevSecOps integration</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="card-link">Build securely →</a>
+      </div>
+
+      <div id="ai" class="service-card">
+        <div class="service-icon icon-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a2 2 0 012 2v2a2 2 0 01-2 2 2 2 0 01-2-2V4a2 2 0 012-2z"/><path d="M12 16a2 2 0 012 2v2a2 2 0 01-2 2 2 2 0 01-2-2v-2a2 2 0 012-2z"/><path d="M4 12a2 2 0 012-2h2a2 2 0 010 4H6a2 2 0 01-2-2z"/><path d="M16 12a2 2 0 012-2h2a2 2 0 010 4h-2a2 2 0 01-2-2z"/></svg></div>
+        <h3>AI & Machine Learning</h3>
+        <p>AI-powered threat intelligence, behavioral analytics, and predictive security models that learn and adapt to emerging threats.</p>
+        <ul style="margin:var(--gap-md) 0;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Behavioral anomaly detection</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Threat intelligence feeds</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Custom AI security models</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="card-link">Explore AI security →</a>
+      </div>
+
+      <div id="training" class="service-card">
+        <div class="service-icon icon-yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
+        <h3>Security Training</h3>
+        <p>Tailored cybersecurity awareness programs, phishing simulations, and certifications for employees, IT teams, and executives.</p>
+        <ul style="margin:var(--gap-md) 0;display:flex;flex-direction:column;gap:6px;">
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Phishing simulation campaigns</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Security awareness workshops</li>
+          <li style="font-size:0.85rem;color:var(--c-text2);"><span class="text-cyan">→</span> Executive briefings</li>
+        </ul>
+        <a href="{{ url_for('register') }}" class="card-link">Train your team →</a>
+      </div>
+
+    </div>
+
+    <!-- PRICING TIERS -->
+    <div class="section-header">
+      <span class="section-tag">Pricing</span>
+      <h2 class="section-title">Flexible Plans for Every Organization</h2>
+      <p class="section-desc">Affordable enterprise-grade security. All plans include 24/7 monitoring and dedicated support.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap-lg);">
+      <div class="card" style="border-color:var(--c-border);">
+        <div style="padding:var(--gap-xl);text-align:center;border-bottom:1px solid var(--c-border);">
+          <div class="section-tag" style="margin-bottom:var(--gap-sm);">Starter</div>
+          <div style="font-family:var(--font-head);font-size:2.2rem;font-weight:800;color:#fff;">KES 15K<span style="font-size:1rem;font-weight:400;color:var(--c-text3);">/mo</span></div>
+          <p style="color:var(--c-text3);font-size:0.85rem;margin-top:4px;">For small businesses & startups</p>
+        </div>
+        <div style="padding:var(--gap-xl);">
+          <ul style="display:flex;flex-direction:column;gap:10px;margin-bottom:var(--gap-xl);">
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Basic threat monitoring</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Firewall management</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Email security</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Monthly reports</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text3);"><span>✕</span>Incident response</li>
+          </ul>
+          <a href="{{ url_for('register') }}" class="btn-ghost" style="display:block;text-align:center;">Get Started</a>
+        </div>
+      </div>
+
+      <div class="card" style="border-color:var(--c-cyan);position:relative;overflow:visible;">
+        <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--c-cyan);color:var(--c-bg);font-size:0.75rem;font-weight:700;padding:4px 14px;border-radius:20px;white-space:nowrap;">Most Popular</div>
+        <div style="padding:var(--gap-xl);text-align:center;border-bottom:1px solid var(--c-border);">
+          <div class="section-tag" style="margin-bottom:var(--gap-sm);">Professional</div>
+          <div style="font-family:var(--font-head);font-size:2.2rem;font-weight:800;color:#fff;">KES 45K<span style="font-size:1rem;font-weight:400;color:var(--c-text3);">/mo</span></div>
+          <p style="color:var(--c-text3);font-size:0.85rem;margin-top:4px;">For growing businesses</p>
+        </div>
+        <div style="padding:var(--gap-xl);">
+          <ul style="display:flex;flex-direction:column;gap:10px;margin-bottom:var(--gap-xl);">
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>24/7 SOC monitoring</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Incident response (4hr SLA)</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Vulnerability assessments</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Cloud security</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Staff security training</li>
+          </ul>
+          <a href="{{ url_for('register') }}" class="btn-primary" style="display:block;text-align:center;">Get Started</a>
+        </div>
+      </div>
+
+      <div class="card" style="border-color:var(--c-border);">
+        <div style="padding:var(--gap-xl);text-align:center;border-bottom:1px solid var(--c-border);">
+          <div class="section-tag" style="margin-bottom:var(--gap-sm);">Enterprise</div>
+          <div style="font-family:var(--font-head);font-size:2.2rem;font-weight:800;color:#fff;">Custom</div>
+          <p style="color:var(--c-text3);font-size:0.85rem;margin-top:4px;">Governments & large orgs</p>
+        </div>
+        <div style="padding:var(--gap-xl);">
+          <ul style="display:flex;flex-direction:column;gap:10px;margin-bottom:var(--gap-xl);">
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Dedicated SOC team</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>1hr SLA incident response</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Digital forensics</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>Compliance management</li>
+            <li style="display:flex;gap:8px;font-size:0.875rem;color:var(--c-text2);"><span class="text-green">✓</span>On-site security consulting</li>
+          </ul>
+          <a href="{{ url_for('contact') }}" class="btn-ghost" style="display:block;text-align:center;">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo"><div class="brand-icon small"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/><path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Kibe CyberShield</span></div>
+        <p>Enterprise cybersecurity and AI security services for Africa's digital economy.</p>
+        <div class="footer-contact">
+          <div><span>📧</span> aggreykwamboka62@gmail.com</div>
+          <div><span>📞</span> +254 714 134 241</div>
+          <div><span>📍</span> Nakuru, Kenya</div>
+        </div>
+      </div>
+      <div class="footer-links"><h4>Platform</h4><a href="{{ url_for('dashboard') }}">Dashboard</a><a href="{{ url_for('login') }}">Login</a><a href="{{ url_for('register') }}">Register</a></div>
+      <div class="footer-links"><h4>Services</h4><a href="#protection">Protection</a><a href="#monitoring">Monitoring</a><a href="#forensics">Forensics</a><a href="#training">Training</a></div>
+      <div class="footer-links"><h4>Company</h4><a href="{{ url_for('about') }}">About Us</a><a href="{{ url_for('contact') }}">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 Kibe CyberShield Technologies Ltd. All rights reserved. | Owner: Aggrey Kibe Kwamboka</p></div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+</body>
+</html>

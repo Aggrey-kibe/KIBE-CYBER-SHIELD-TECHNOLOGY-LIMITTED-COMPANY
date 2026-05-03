@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Kibe CyberShield Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+<div id="flashMessages" style="display:none;"></div>
+
+
+<div class="auth-page">
+  <!-- VISUAL PANEL -->
+  <div class="auth-visual">
+    <div class="auth-visual-grid"></div>
+    <div class="glow-orb glow-1" style="position:absolute;top:-100px;right:-100px;width:500px;height:500px;"></div>
+    <div class="auth-visual-content">
+      <div class="auth-shield">
+        <svg viewBox="0 0 120 120" fill="none">
+          <path d="M60 6L12 30v36c0 28.2 20.4 54.6 48 60 27.6-5.4 48-31.8 48-60V30L60 6z" fill="#00C2FF" opacity="0.1"/>
+          <path d="M60 6L12 30v36c0 28.2 20.4 54.6 48 60 27.6-5.4 48-31.8 48-60V30L60 6z" stroke="#00C2FF" stroke-width="2"/>
+          <path d="M42 60l12 12 24-24" stroke="#00C2FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>Secure Access Portal</h2>
+      <p>Your gateway to enterprise-grade cybersecurity monitoring, incident response, and threat intelligence.</p>
+      <ul class="auth-features">
+        <li><span class="feature-check">✓</span> Role-based access control</li>
+        <li><span class="feature-check">✓</span> End-to-end encrypted sessions</li>
+        <li><span class="feature-check">✓</span> Multi-factor authentication ready</li>
+        <li><span class="feature-check">✓</span> Real-time security monitoring</li>
+        <li><span class="feature-check">✓</span> Audit trail on all actions</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FORM AREA -->
+  <div class="auth-form-area">
+    <div class="auth-card">
+      <a href="index.html" class="auth-logo">
+        <div class="brand-icon"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/><path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <span>Kibe<span class="accent">Cyber</span>Shield</span>
+      </a>
+
+      <div class="auth-header">
+        <h1>Welcome back</h1>
+        <p>Sign in to your secure account</p>
+      </div>
+
+      <!-- Error/Success messages -->
+      <div id="loginAlert" class="alert alert-danger hidden"></div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" novalidate action="/login" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <div class="input-group">
+            <span class="input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </span>
+            <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" autocomplete="email" required>
+          </div>
+          <div class="form-error hidden" id="emailError">Please enter a valid email address</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-group">
+            <span class="input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+              </svg>
+            </span>
+            <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" autocomplete="current-password" required>
+            <button type="button" class="input-toggle" id="togglePwd" aria-label="Toggle password">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="form-error hidden" id="pwdError">Password is required</div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--gap-lg);">
+          <div class="check-group">
+            <input type="checkbox" id="remember" class="check-input">
+            <label for="remember" class="check-label">Remember me</label>
+          </div>
+          <a href="forgot_password.html" class="text-cyan" style="font-size:0.85rem;">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span id="btnText">Sign In Securely</span>
+          <span id="btnSpinner" class="spinner hidden"></span>
+        </button>
+      </form>
+
+      <div class="form-divider">or sign in as</div>
+
+      <!-- DEMO QUICK LOGINS -->
+      <div class="role-selector" style="margin-bottom:var(--gap-lg);">
+        <button type="button" class="role-label" onclick="demoLogin('admin')" style="cursor:pointer;width:100%;">
+          <span class="role-icon">🔐</span>
+          <span class="role-name">Admin</span>
+          <span class="role-desc">Full access</span>
+        </button>
+        <button type="button" class="role-label" onclick="demoLogin('staff')" style="cursor:pointer;width:100%;">
+          <span class="role-icon">🛡️</span>
+          <span class="role-name">Staff</span>
+          <span class="role-desc">Operations</span>
+        </button>
+        <button type="button" class="role-label" onclick="demoLogin('client')" style="cursor:pointer;width:100%;">
+          <span class="role-icon">👤</span>
+          <span class="role-name">Client</span>
+          <span class="role-desc">My services</span>
+        </button>
+      </div>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Create one →</a>
+      </div>
+
+      <!-- DEMO CREDENTIALS (Development mode only — remove in production) -->
+      <details style="margin-top:var(--gap-lg);">
+        <summary style="font-family:var(--font-mono);font-size:0.75rem;color:var(--c-text3);cursor:pointer;padding:8px 12px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-sm);list-style:none;">
+          ▶ Demo Access (Development)
+        </summary>
+        <div style="padding:var(--gap-md);background:var(--c-surface);border:1px solid var(--c-border);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm);">
+          <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--c-text3);margin-bottom:8px;">Click a role to auto-fill credentials:</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <button type="button" onclick="demoLogin('admin')" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--c-red);background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:4px;padding:6px 10px;cursor:pointer;text-align:left;">🔐 Admin — admin@kibecyber.com</button>
+            <button type="button" onclick="demoLogin('staff')" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--c-green);background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:4px;padding:6px 10px;cursor:pointer;text-align:left;">🛡️ Staff — staff@kibecyber.com</button>
+            <button type="button" onclick="demoLogin('client')" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--c-cyan);background:rgba(0,194,255,0.08);border:1px solid rgba(0,194,255,0.2);border-radius:4px;padding:6px 10px;cursor:pointer;text-align:left;">👤 Client — client@kibecyber.com</button>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+
+
+<script>// navigation.js handles all form logic</script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

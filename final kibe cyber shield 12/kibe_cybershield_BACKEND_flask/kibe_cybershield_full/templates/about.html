@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Kibe CyberShield Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+{%- with messages = get_flashed_messages(with_categories=true) %}
+{%- if messages %}
+<div id="flashMessages" style="position:fixed;top:80px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:380px;">
+  {%- for category, message in messages %}
+  <div class="alert alert-{{ category }}" style="box-shadow:0 8px 32px rgba(0,0,0,0.4);padding:12px 16px;border-radius:8px;font-size:0.875rem;">{{ message }}</div>
+  {%- endfor %}
+</div>
+<script>setTimeout(function(){var el=document.getElementById('flashMessages');if(el){el.style.opacity='0';el.style.transition='opacity 0.5s';setTimeout(function(){el.remove();},500);}},4000);</script>
+{%- endif %}
+{%- endwith %}
+
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="{{ url_for('index') }}" class="nav-brand">
+      <div class="brand-icon"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/><path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="brand-name">Kibe<span class="accent">Cyber</span>Shield</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+      <a href="{{ url_for('services') }}" class="nav-link">Services</a>
+      <a href="{{ url_for('about') }}" class="nav-link active">About</a>
+      <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+      <a href="{{ url_for('login') }}" class="nav-btn-outline">Login</a>
+      <a href="{{ url_for('register') }}" class="nav-btn-solid">Get Started</a>
+    </div>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <span class="section-tag">Our Story</span>
+  <h1>About Kibe CyberShield</h1>
+  <p>Born in Nakuru, built for Africa. We protect the digital future of businesses, governments, and individuals across East Africa and beyond.</p>
+</div>
+
+<!-- MISSION -->
+<section class="section why-us">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-text">
+        <span class="section-tag">Our Mission</span>
+        <h2 class="section-title">Securing Africa's Digital Economy</h2>
+        <p>Kibe CyberShield Technologies Ltd was founded with a clear purpose: to make enterprise-grade cybersecurity accessible and affordable for African organisations of all sizes.</p>
+        <p style="margin-top:var(--gap-md);color:var(--c-text2);">From startups in Nairobi to government agencies in Nakuru, hospitals in Mombasa to NGOs in Kisumu — we believe every organisation deserves world-class protection, regardless of budget or technical capacity.</p>
+        <p style="margin-top:var(--gap-md);color:var(--c-text2);">Our team of certified security professionals brings together expertise in threat intelligence, digital forensics, cloud security, and AI-powered defence systems — all purpose-built for the African threat landscape.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:var(--gap-md);">
+        <div class="card" style="padding:var(--gap-xl);">
+          <div style="font-family:var(--font-head);font-size:2.5rem;font-weight:800;color:var(--c-cyan);">500+</div>
+          <div style="color:var(--c-text2);font-size:0.9rem;">Organisations Protected</div>
+        </div>
+        <div class="card" style="padding:var(--gap-xl);">
+          <div style="font-family:var(--font-head);font-size:2.5rem;font-weight:800;color:var(--c-green);">99.9%</div>
+          <div style="color:var(--c-text2);font-size:0.9rem;">Platform Uptime SLA</div>
+        </div>
+        <div class="card" style="padding:var(--gap-xl);">
+          <div style="font-family:var(--font-head);font-size:2.5rem;font-weight:800;color:var(--c-yellow);">24/7</div>
+          <div style="color:var(--c-text2);font-size:0.9rem;">Security Monitoring</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="section" style="background:var(--c-bg2);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Leadership</span>
+      <h2 class="section-title">Meet Our Founder</h2>
+    </div>
+    <div style="max-width:700px;margin:0 auto;">
+      <div class="card" style="padding:var(--gap-xl);">
+        <div style="display:flex;align-items:center;gap:var(--gap-xl);margin-bottom:var(--gap-xl);flex-wrap:wrap;">
+          <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--c-cyan),var(--c-blue));display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:1.8rem;font-weight:700;color:var(--c-bg);flex-shrink:0;">AK</div>
+          <div>
+            <h3 style="font-family:var(--font-head);font-size:1.4rem;font-weight:700;color:#fff;">Aggrey Kibe Kwamboka</h3>
+            <div style="color:var(--c-cyan);font-family:var(--font-mono);font-size:0.8rem;margin-top:4px;">Founder & Chief Executive Officer</div>
+            <div style="color:var(--c-text3);font-size:0.85rem;margin-top:4px;">📍 Nakuru, Kenya</div>
+          </div>
+        </div>
+        <p style="color:var(--c-text2);margin-bottom:var(--gap-md);">Aggrey Kibe Kwamboka is a cybersecurity engineer, software developer, and AI solutions architect with a passion for securing Africa's growing digital economy.</p>
+        <p style="color:var(--c-text2);margin-bottom:var(--gap-md);">With expertise spanning network security, digital forensics, cloud architecture, and machine learning, Aggrey founded Kibe CyberShield Technologies Ltd to bridge the cybersecurity capability gap facing African businesses and institutions.</p>
+        <p style="color:var(--c-text2);">Under his leadership, the platform has grown to protect hundreds of organisations across East Africa, providing enterprise-grade security solutions tailored to the unique challenges of the region.</p>
+        <div style="display:flex;gap:var(--gap-md);margin-top:var(--gap-xl);flex-wrap:wrap;">
+          <a href="mailto:aggreykwamboka62@gmail.com" class="btn-primary">📧 aggreykwamboka62@gmail.com</a>
+          <a href="tel:+254714134241" class="btn-ghost">📞 +254 714 134 241</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Our Values</span>
+      <h2 class="section-title">What We Stand For</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon icon-cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Security First</h3>
+        <p>Every decision we make — from architecture to hiring — puts security at the centre. We never compromise on protection.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"/></svg></div>
+        <h3>Africa-Centred</h3>
+        <p>We understand the unique challenges of African organisations. Our solutions are built for the local context, not adapted from elsewhere.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3>Always Available</h3>
+        <p>Threats don't keep office hours. Our 24/7 SOC and support team are always on, always watching, always ready to respond.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
+        <h3>Knowledge Sharing</h3>
+        <p>We actively train, certify, and empower African security professionals — building the continent's cybersecurity talent pipeline.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <h3>Affordable Excellence</h3>
+        <p>Enterprise security shouldn't require an enterprise budget. We make world-class protection accessible to every organisation.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <h3>Innovation-Driven</h3>
+        <p>From AI threat detection to cloud security automation, we continuously invest in cutting-edge technologies to stay ahead of attackers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARGET SECTORS -->
+<section class="section" style="background:var(--c-bg2);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Who We Serve</span>
+      <h2 class="section-title">Sectors We Protect</h2>
+      <p class="section-desc">Our solutions are designed for the specific security needs of diverse sectors across East Africa.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--gap-md);">
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--gap-xl);text-align:center;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--c-border2)'" onmouseout="this.style.borderColor='var(--c-border)'">
+        <div style="font-size:2rem;margin-bottom:var(--gap-sm);">🏢</div>
+        <div style="font-size:0.85rem;font-weight:600;color:#fff;">Businesses</div>
+      </div>
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--gap-xl);text-align:center;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--c-border2)'" onmouseout="this.style.borderColor='var(--c-border)'">
+        <div style="font-size:2rem;margin-bottom:var(--gap-sm);">🏛️</div>
+        <div style="font-size:0.85rem;font-weight:600;color:#fff;">Government</div>
+      </div>
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--gap-xl);text-align:center;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--c-border2)'" onmouseout="this.style.borderColor='var(--c-border)'">
+        <div style="font-size:2rem;margin-bottom:var(--gap-sm);">🏥</div>
+        <div style="font-size:0.85rem;font-weight:600;color:#fff;">Hospitals</div>
+      </div>
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--gap-xl);text-align:center;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--c-border2)'" onmouseout="this.style.borderColor='var(--c-border)'">
+        <div style="font-size:2rem;margin-bottom:var(--gap-sm);">🎓</div>
+        <div style="font-size:0.85rem;font-weight:600;color:#fff;">Schools</div>
+      </div>
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--gap-xl);text-align:center;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--c-border2)'" onmouseout="this.style.borderColor='var(--c-border)'">
+        <div style="font-size:2rem;margin-bottom:var(--gap-sm);">🌱</div>
+        <div style="font-size:0.85rem;font-weight:600;color:#fff;">NGOs</div>
+      </div>
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--gap-xl);text-align:center;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--c-border2)'" onmouseout="this.style.borderColor='var(--c-border)'">
+        <div style="font-size:2rem;margin-bottom:var(--gap-sm);">🚀</div>
+        <div style="font-size:0.85rem;font-weight:600;color:#fff;">Startups</div>
+      </div>
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--gap-xl);text-align:center;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--c-border2)'" onmouseout="this.style.borderColor='var(--c-border)'">
+        <div style="font-size:2rem;margin-bottom:var(--gap-sm);">👤</div>
+        <div style="font-size:0.85rem;font-weight:600;color:#fff;">Individuals</div>
+      </div>
+      <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--gap-xl);text-align:center;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--c-border2)'" onmouseout="this.style.borderColor='var(--c-border)'">
+        <div style="font-size:2rem;margin-bottom:var(--gap-sm);">🏦</div>
+        <div style="font-size:0.85rem;font-weight:600;color:#fff;">Finance</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-glow"></div>
+      <h2>Ready to Get Protected?</h2>
+      <p>Join hundreds of organisations across East Africa that trust Kibe CyberShield.</p>
+      <div class="cta-actions">
+        <a href="{{ url_for('register') }}" class="btn-primary">Create Free Account</a>
+        <a href="{{ url_for('contact') }}" class="btn-ghost">Talk to Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo"><div class="brand-icon small"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/><path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Kibe CyberShield</span></div>
+        <p>Enterprise cybersecurity and AI security services for Africa's digital economy.</p>
+        <div class="footer-contact">
+          <div><span>📧</span> aggreykwamboka62@gmail.com</div>
+          <div><span>📞</span> +254 714 134 241</div>
+          <div><span>📍</span> Nakuru, Kenya</div>
+        </div>
+      </div>
+      <div class="footer-links"><h4>Platform</h4><a href="{{ url_for('dashboard') }}">Dashboard</a><a href="{{ url_for('login') }}">Login</a><a href="{{ url_for('register') }}">Register</a></div>
+      <div class="footer-links"><h4>Services</h4><a href="{{ url_for('services') }}">All Services</a><a href="{{ url_for('services') }}#monitoring">Monitoring</a><a href="{{ url_for('services') }}#forensics">Forensics</a><a href="{{ url_for('services') }}#training">Training</a></div>
+      <div class="footer-links"><h4>Company</h4><a href="{{ url_for('about') }}">About Us</a><a href="{{ url_for('contact') }}">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 Kibe CyberShield Technologies Ltd. All rights reserved. | Owner: Aggrey Kibe Kwamboka</p></div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+</body>
+</html>

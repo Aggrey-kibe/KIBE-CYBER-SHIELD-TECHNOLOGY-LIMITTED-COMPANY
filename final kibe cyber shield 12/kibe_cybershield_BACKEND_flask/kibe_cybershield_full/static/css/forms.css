@@ -1,0 +1,104 @@
+/* ============================================================
+   KIBE CYBERSHIELD — FORMS & AUTH STYLES
+   ============================================================ */
+
+/* ── AUTH LAYOUT ── */
+.auth-page {
+  min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+}
+.auth-visual {
+  background: linear-gradient(135deg, #060D1F 0%, #0B1733 60%, #0F2040 100%);
+  display: flex; align-items: center; justify-content: center; padding: var(--gap-2xl);
+  position: relative; overflow: hidden; border-right: 1px solid var(--c-border);
+}
+.auth-visual-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(0,194,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,194,255,0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+.auth-visual-content { position: relative; z-index: 1; text-align: center; max-width: 400px; }
+.auth-shield { width: 120px; height: 120px; margin: 0 auto var(--gap-xl); position: relative; }
+.auth-shield svg { width: 100%; height: 100%; filter: drop-shadow(0 0 30px rgba(0,194,255,0.4)); }
+.auth-visual h2 { font-family: var(--font-head); font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: var(--gap-md); }
+.auth-visual p  { color: var(--c-text2); font-size: 0.9rem; line-height: 1.7; margin-bottom: var(--gap-xl); }
+.auth-features { list-style: none; text-align: left; }
+.auth-features li {
+  display: flex; align-items: center; gap: var(--gap-sm);
+  font-size: 0.875rem; color: var(--c-text2); padding: 8px 0;
+  border-bottom: 1px solid var(--c-border);
+}
+.auth-features li:last-child { border-bottom: none; }
+.feature-check { color: var(--c-cyan); font-weight: 700; font-size: 0.8rem; }
+
+/* ── AUTH FORM AREA ── */
+.auth-form-area {
+  background: var(--c-bg); display: flex; align-items: center;
+  justify-content: center; padding: var(--gap-2xl) var(--gap-xl);
+  min-height: 100vh;
+}
+.auth-card { width: 100%; max-width: 440px; }
+.auth-logo {
+  display: flex; align-items: center; gap: var(--gap-sm); margin-bottom: var(--gap-xl);
+  font-family: var(--font-head); font-size: 1.1rem; font-weight: 700; color: #fff;
+}
+.auth-header { margin-bottom: var(--gap-xl); }
+.auth-header h1 { font-family: var(--font-head); font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.auth-header p { color: var(--c-text2); font-size: 0.9rem; }
+
+/* ── FORM SUBMIT BUTTON ── */
+.btn-submit {
+  width: 100%; padding: 14px;
+  background: var(--c-cyan); color: var(--c-bg);
+  border: none; border-radius: var(--r-sm); font-size: 0.95rem; font-weight: 600;
+  cursor: pointer; transition: all var(--transition); box-shadow: var(--shadow-btn);
+  display: flex; align-items: center; justify-content: center; gap: var(--gap-sm);
+}
+.btn-submit:hover { background: #33CEFF; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,194,255,0.4); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-submit .spinner { border-color: rgba(11,19,43,0.3); border-top-color: var(--c-bg); }
+
+/* ── DIVIDER ── */
+.form-divider {
+  display: flex; align-items: center; gap: var(--gap-md);
+  margin: var(--gap-lg) 0; color: var(--c-text3); font-size: 0.8rem;
+}
+.form-divider::before, .form-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--c-border);
+}
+
+/* ── AUTH FOOTER ── */
+.auth-footer { text-align: center; margin-top: var(--gap-lg); color: var(--c-text3); font-size: 0.875rem; }
+.auth-footer a { color: var(--c-cyan); font-weight: 500; }
+
+/* ── ROLE SELECT ── */
+.role-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-sm); }
+.role-option { display: none; }
+.role-label {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 8px; background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: var(--r-md); cursor: pointer; transition: all var(--transition); text-align: center;
+}
+.role-label:hover { border-color: var(--c-border2); }
+.role-option:checked + .role-label { border-color: var(--c-cyan); background: var(--c-cyan-dim); }
+.role-icon { font-size: 1.2rem; }
+.role-name { font-size: 0.8rem; font-weight: 600; color: var(--c-text); }
+.role-desc { font-size: 0.7rem; color: var(--c-text3); }
+
+/* ── CHECKBOX & TOGGLE ── */
+.check-group { display: flex; align-items: center; gap: var(--gap-sm); }
+.check-input { width: 16px; height: 16px; accent-color: var(--c-cyan); cursor: pointer; }
+.check-label { font-size: 0.875rem; color: var(--c-text2); cursor: pointer; }
+
+/* ── PASSWORD STRENGTH ── */
+.pwd-strength { margin-top: 8px; }
+.pwd-bars { display: flex; gap: 4px; margin-bottom: 4px; }
+.pwd-bar { flex: 1; height: 4px; background: var(--c-surface2); border-radius: 2px; transition: background 0.3s; }
+.pwd-bar.weak   { background: var(--c-red); }
+.pwd-bar.fair   { background: var(--c-yellow); }
+.pwd-bar.strong { background: var(--c-green); }
+.pwd-text { font-size: 0.75rem; color: var(--c-text3); font-family: var(--font-mono); }
+
+/* ── CONTACT FORM ── */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-md); }
+@media (max-width: 600px) { .contact-grid { grid-template-columns: 1fr; } }

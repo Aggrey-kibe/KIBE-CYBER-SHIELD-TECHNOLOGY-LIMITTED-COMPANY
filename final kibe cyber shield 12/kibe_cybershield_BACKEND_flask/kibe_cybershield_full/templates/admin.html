@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Kibe CyberShield</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body>
+{%- with messages = get_flashed_messages(with_categories=true) %}
+{%- if messages %}
+<div id="flashMessages" style="position:fixed;top:80px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:380px;">
+  {%- for category, message in messages %}
+  <div class="alert alert-{{ category }}" style="box-shadow:0 8px 32px rgba(0,0,0,0.4);padding:12px 16px;border-radius:8px;font-size:0.875rem;">{{ message }}</div>
+  {%- endfor %}
+</div>
+<script>setTimeout(function(){var el=document.getElementById('flashMessages');if(el){el.style.opacity='0';el.style.transition='opacity 0.5s';setTimeout(function(){el.remove();},500);}},4000);</script>
+{%- endif %}
+{%- endwith %}
+
+
+<!-- Auth guard -->
+<script>
+  (function(){
+    const auth = sessionStorage.getItem('kcs_auth');
+    const user = JSON.parse(sessionStorage.getItem('kcs_user') || 'null');
+    if (!auth || !user) { window.location.href = 'login.html'; return; }
+    if (user.role !== 'admin') { window.location.href = (user.role === 'staff' ? 'staff.html' : 'client.html'); }
+  })();
+</script>
+
+<div class="app-body">
+  <!-- SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="{{ url_for('index') }}" class="sidebar-brand">
+        <div class="brand-icon small"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/><path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        KCS Platform
+      </a>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close">✕</button>
+    </div>
+
+    <div class="sidebar-profile">
+      <div class="profile-mini">
+        <div class="avatar admin" data-user-avatar>{{ current_user.name[:2].upper() if current_user else "AK" }}</div>
+        <div class="profile-info">
+          <div class="profile-name" data-user-name>{{ current_user.name if current_user else "Admin User" }}</div>
+          <div class="profile-role role-admin" data-role-badge>Admin</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">Overview</div>
+        <a href="#" class="sidebar-link active" data-section="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span class="link-text">Dashboard</span>
+        </a>
+        <a href="#" class="sidebar-link" data-section="notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="link-text">Notifications</span>
+          <span class="link-badge">3</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Management</div>
+        <a href="#" class="sidebar-link" data-section="users">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"/></svg>
+          <span class="link-text">User Management</span>
+        </a>
+        <a href="#" class="sidebar-link" data-section="services">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="link-text">Services</span>
+        </a>
+        <a href="#" class="sidebar-link" data-section="incidents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span class="link-text">Incidents</span>
+        </a>
+        <a href="#" class="sidebar-link" data-section="tickets">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <span class="link-text">Tickets</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Security</div>
+        <a href="#" class="sidebar-link" data-section="alerts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span class="link-text">Security Alerts</span>
+        </a>
+        <a href="#" class="sidebar-link" data-section="audit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span class="link-text">Audit Logs</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">System</div>
+        <a href="#" class="sidebar-link" data-section="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 003.52 19.07M4.93 4.93A10 10 0 0120.48 19.07"/></svg>
+          <span class="link-text">System Settings</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/logout" class="sidebar-link logout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        <span class="link-text">Sign Out</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <span class="topbar-title" id="topbarTitle">Admin Dashboard</span>
+      </div>
+      <div class="topbar-right">
+          <div style="display:flex;flex-direction:column;align-items:flex-end;margin-right:var(--gap-md);line-height:1.3;">
+            <span id="topbarClock" class="live-clock font-mono" style="font-size:0.875rem;color:var(--c-text1);font-weight:500;">--:--:--</span>
+            <span id="topbarDate"  class="live-date  font-mono" style="font-size:0.72rem; color:var(--c-text3);">Loading...</span>
+          </div>
+        <span class="topbar-time" id="topbarTime"></span>
+        <button class="icon-btn" title="Notifications" data-section="notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="notif-count">3</span>
+        </button>
+        <div class="avatar admin" data-user-avatar style="cursor:default;">{{ current_user.name[:2].upper() if current_user else "AK" }}</div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content">
+
+      <!-- ── OVERVIEW SECTION ── -->
+      <section data-content-section="overview">
+        <div class="stats-row">
+          <div class="stat-card s-cyan">
+            <div class="stat-card-header">
+              <div class="stat-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"/></svg></div>
+              <span class="stat-trend up">↑ 12%</span>
+            </div>
+            <div class="stat-value" data-counter="{{ stats.total_users }}">0</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+          <div class="stat-card s-red">
+            <div class="stat-card-header">
+              <div class="stat-icon red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/></svg></div>
+              <span class="stat-trend up">↑ 4</span>
+            </div>
+            <div class="stat-value" data-counter="{{ stats.active_alerts }}">0</div>
+            <div class="stat-label">Active Alerts</div>
+          </div>
+          <div class="stat-card s-yellow">
+            <div class="stat-card-header">
+              <div class="stat-icon yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg></div>
+              <span class="stat-trend down">↓ 2</span>
+            </div>
+            <div class="stat-value" data-counter="{{ stats.open_incidents }}">0</div>
+            <div class="stat-label">Open Incidents</div>
+          </div>
+          <div class="stat-card s-green">
+            <div class="stat-card-header">
+              <div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+              <span class="stat-trend up">Live</span>
+            </div>
+            <div class="stat-value" data-counter="{{ stats.open_tickets }}">0</div>
+            <div class="stat-label">Open Tickets</div>
+          </div>
+        </div>
+
+        
+          <!-- ══ ANALYTICS CHARTS ══ -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-lg);margin-bottom:var(--gap-xl);">
+
+            <div class="card">
+              <div class="card-header">
+                <h3>Incident Severity</h3>
+                <span class="badge badge-info font-mono" style="font-size:0.72rem;">Live</span>
+              </div>
+              <div class="card-body" style="padding:var(--gap-md);">
+                <canvas id="incidentChart" style="width:100%;height:200px;display:block;"></canvas>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3>Ticket Status</h3>
+                <span class="badge badge-info font-mono" style="font-size:0.72rem;">Live</span>
+              </div>
+              <div class="card-body" style="padding:var(--gap-md);">
+                <canvas id="ticketChart" style="width:100%;height:200px;display:block;"></canvas>
+              </div>
+            </div>
+
+          </div>
+          <!-- ══ END CHARTS ══ -->
+
+<div class="dash-grid">
+          <!-- Security Alerts -->
+          <div class="card">
+            <div class="card-header">
+              <h3>🔴 Security Alerts</h3>
+              <a href="#" class="text-cyan" style="font-size:0.8rem;" data-section="alerts">View All</a>
+            </div>
+            <div class="card-body">
+              <div class="alert-list" id="alertListMain">
+                {%- for a in alerts[:6] %}
+                <div class="alert-item {{ a.severity }}">
+                  <div class="alert-dot {{ a.severity }}"></div>
+                  <div class="alert-info-text">
+                    <div class="alert-title">{{ a.title }}</div>
+                    <div class="alert-meta">{{ a.alert_id }} &bull; {{ a.source }} &bull; {{ a.created_at[11:19] if a.created_at|length > 10 else '' }}</div>
+                  </div>
+                  <span class="badge {% if a.severity=='critical' %}badge-danger{% elif a.severity=='high' %}badge-warning{% elif a.severity=='medium' %}badge-info{% else %}badge-success{% endif %}">{{ a.severity }}</span>
+                </div>
+                {%- else %}
+                <div style="padding:16px;color:var(--c-text3);">No active alerts</div>
+                {%- endfor %}
+                </div>
+            </div>
+          </div>
+
+          <!-- Notifications -->
+          <div class="card">
+            <div class="card-header">
+              <h3>🔔 Notifications</h3>
+              <button style="font-size:0.8rem;color:var(--c-cyan);background:none;border:none;cursor:pointer;" data-mark-all-read="notifList">Mark all read</button>
+            </div>
+            <div class="notif-list" id="notifList"><!-- Populated by notifications.js --></div>
+          </div>
+        </div>
+
+        <!-- Audit Log Preview -->
+        <div class="card">
+          <div class="card-header">
+            <h3>📋 Recent Activity</h3>
+            <a href="#" class="text-cyan" style="font-size:0.8rem;" data-section="audit">Full Audit Log →</a>
+          </div>
+          <div id="auditLogList">
+                {%- for log in logs[:10] %}
+                <div class="log-entry">
+                  <span class="log-time">{{ log.created_at[11:19] }}</span>
+                  <span class="log-event">{{ log.detail }}</span>
+                  <span class="badge badge-info" style="font-size:0.7rem;">{{ log.action }}</span>
+                  <span class="log-user">{{ log.user_email }}</span>
+                </div>
+                {%- else %}
+                <div style="padding:16px;color:var(--c-text3);text-align:center;">No logs yet</div>
+                {%- endfor %}
+                </div>
+        </div>
+      </section>
+
+      <!-- ── USERS SECTION ── -->
+      <section data-content-section="users" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>User Management</h3>
+            <button class="btn-primary" style="padding:8px 16px;font-size:0.85rem;" onclick="document.getElementById('addUserModal').style.display='flex'">+ Add User</button>
+          </div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+              <tbody>
+                {%- for u in users %}
+                <tr>
+                  <td>{{ u.name }}</td>
+                  <td class="font-mono text-muted">{{ u.email }}</td>
+                  <td><span class="badge {% if u.role=='admin' %}badge-danger{% elif u.role=='staff' %}badge-success{% else %}badge-info{% endif %}">{{ u.role|capitalize }}</span></td>
+                  <td><span class="badge {% if u.status=='active' %}badge-success{% elif u.status=='suspended' %}badge-danger{% else %}badge-warning{% endif %}">{{ u.status|capitalize }}</span></td>
+                  <td class="font-mono text-muted">{{ u.created_at[:10] }}</td>
+                  <td>
+                    <button class="btn-ghost" style="padding:4px 10px;font-size:0.78rem;" data-action="edit" data-id="{{ u.id }}">Edit</button>
+                    <button class="btn-danger" style="padding:4px 8px;font-size:0.78rem;margin-left:4px;" onclick="updateUserStatus({{ u.id }}, '{% if u.status=="active" %}suspended{% else %}active{% endif %}')">
+                      {% if u.status=='active' %}Suspend{% else %}Activate{% endif %}
+                    </button>
+                  </td>
+                </tr>
+                {%- else %}
+                <tr><td colspan="6" style="text-align:center;color:var(--c-text3);padding:20px;">No users found</td></tr>
+                {%- endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SERVICES SECTION ── -->
+      <section data-content-section="services" class="hidden">
+        <div class="card">
+          <div class="card-header"><h3>Service Requests</h3></div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Client</th><th>Service</th><th>Priority</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+              <tbody>
+                {%- for svc in services %}
+                <tr>
+                  <td class="font-mono text-muted">SRQ-{{ '%04d'|format(svc.id) }}</td>
+                  <td>{{ svc.client_name or '—' }}</td>
+                  <td>{{ svc.service }}</td>
+                  <td><span class="badge {% if svc.priority in ('high','urgent') %}badge-danger{% elif svc.priority=='medium' %}badge-warning{% else %}badge-info{% endif %}">{{ svc.priority|capitalize }}</span></td>
+                  <td><span class="badge {% if svc.status in ('active','approved') %}badge-success{% elif svc.status=='pending' %}badge-warning{% else %}badge-info{% endif %}">{{ svc.status|capitalize }}</span></td>
+                  <td class="font-mono text-muted">{{ svc.created_at[:10] }}</td>
+                  <td>
+                    {% if svc.status == 'pending' %}
+                    <button class="btn-success" style="padding:4px 12px;font-size:0.78rem;" data-action="approve" data-id="{{ svc.id }}">Approve</button>
+                    {% else %}
+                    <button class="btn-ghost" style="padding:4px 12px;font-size:0.78rem;" data-action="view" data-id="{{ svc.id }}">View</button>
+                    {% endif %}
+                  </td>
+                </tr>
+                {%- else %}
+                <tr><td colspan="7" style="text-align:center;color:var(--c-text3);padding:20px;">No service requests yet</td></tr>
+                {%- endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── INCIDENTS SECTION ── -->
+      <section data-content-section="incidents" class="hidden">
+        <div class="card">
+          <div class="card-header"><h3>Incident Management</h3></div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Title</th><th>Severity</th><th>Assigned To</th><th>Status</th><th>Reported</th></tr></thead>
+              <tbody>
+                {%- for inc in incidents %}
+                <tr>
+                  <td class="font-mono text-muted">INC-{{ '%04d'|format(inc.id) }}</td>
+                  <td>{{ inc.title }}</td>
+                  <td><span class="badge {% if inc.severity=='critical' %}badge-danger{% elif inc.severity=='high' %}badge-warning{% elif inc.severity=='medium' %}badge-info{% else %}badge-success{% endif %}">{{ inc.severity|capitalize }}</span></td>
+                  <td>{{ inc.reporter or '—' }}</td>
+                  <td><span class="badge {% if inc.status in ('open','investigating') %}badge-warning{% elif inc.status=='resolved' %}badge-success{% elif inc.status=='contained' %}badge-info{% else %}badge-success{% endif %}">{{ inc.status|capitalize }}</span></td>
+                  <td class="font-mono text-muted">{{ inc.created_at[:10] }}</td>
+                </tr>
+                {%- else %}
+                <tr><td colspan="6" style="text-align:center;color:var(--c-text3);padding:20px;">No incidents yet</td></tr>
+                {%- endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── ALERTS SECTION ── -->
+      <section data-content-section="alerts" class="hidden">
+        <div class="card">
+          <div class="card-header"><h3>Security Monitoring — Active Alerts</h3></div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Severity</th><th>Alert</th><th>Source</th><th>Time</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="alertsTableBody">
+                {%- for a in alerts %}
+                <tr>
+                  <td class="font-mono text-muted">{{ a.alert_id }}</td>
+                  <td><span class="badge {% if a.severity=='critical' %}badge-danger{% elif a.severity=='high' %}badge-warning{% elif a.severity=='medium' %}badge-info{% else %}badge-success{% endif %}">{{ a.severity }}</span></td>
+                  <td>{{ a.title }}</td>
+                  <td class="font-mono text-muted" style="font-size:0.8rem;">{{ a.source }}</td>
+                  <td class="font-mono text-muted" style="font-size:0.8rem;">{{ a.created_at[11:19] if a.created_at|length > 10 else '' }}</td>
+                  <td><span class="badge badge-info">{{ a.status }}</span></td>
+                  <td><button class="btn-ghost" style="padding:4px 10px;font-size:0.78rem;" data-action="view" data-id="{{ a.id }}">Investigate</button></td>
+                </tr>
+                {%- else %}
+                <tr><td colspan="7" style="text-align:center;color:var(--c-text3);">No alerts</td></tr>
+                {%- endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── AUDIT LOG SECTION ── -->
+      <section data-content-section="audit" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>Audit Log</h3>
+            <span class="font-mono text-muted" style="font-size:0.8rem;">Last 24 hours</span>
+          </div>
+          <div id="auditLogFull">
+                {%- for log in logs %}
+                <div class="log-entry">
+                  <span class="log-time">{{ log.created_at[11:19] if log.created_at|length > 10 else log.created_at }}</span>
+                  <span class="log-event">{{ log.detail }}</span>
+                  <span class="badge badge-info" style="font-size:0.7rem;">{{ log.action }}</span>
+                  <span class="log-user">{{ log.user_email }}</span>
+                </div>
+                {%- else %}
+                <div style="padding:24px;text-align:center;color:var(--c-text3);">No audit logs yet</div>
+                {%- endfor %}
+                </div>
+        </div>
+      </section>
+
+      <!-- ── NOTIFICATIONS SECTION ── -->
+      <section data-content-section="notifications" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>Notifications</h3>
+            <button style="font-size:0.8rem;color:var(--c-cyan);background:none;border:none;cursor:pointer;" data-mark-all-read="notifPanelList">Mark all read</button>
+          </div>
+          <div class="notif-list" id="notifPanelList"></div>
+        </div>
+      </section>
+
+
+      <!-- ── TICKETS SECTION ── -->
+      <section data-content-section="tickets" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>Support Tickets</h3>
+            <span class="badge badge-info font-mono" style="font-size:0.75rem;">{{ tickets|length }} total</span>
+          </div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead>
+                <tr><th>ID</th><th>Client</th><th>Subject</th><th>Priority</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+              </thead>
+              <tbody>
+                {%- for t in tickets %}
+                <tr>
+                  <td class="font-mono text-muted">#T-{{ '%04d'|format(t.id) }}</td>
+                  <td>{{ t.client_name or '—' }}</td>
+                  <td>{{ t.subject }}</td>
+                  <td><span class="badge {% if t.priority in ('high','urgent') %}badge-danger{% elif t.priority=='medium' %}badge-warning{% else %}badge-info{% endif %}">{{ t.priority|capitalize }}</span></td>
+                  <td><span class="badge {% if t.status=='open' %}badge-warning{% elif t.status=='resolved' %}badge-success{% elif t.status=='in_progress' %}badge-info{% else %}badge-success{% endif %}">{{ t.status|replace('_',' ')|capitalize }}</span></td>
+                  <td class="font-mono text-muted">{{ t.created_at[:10] }}</td>
+                  <td style="display:flex;gap:6px;">
+                    <button class="btn-ghost" style="padding:4px 10px;font-size:0.78rem;" onclick="updateTicketStatus({{ t.id }},'in_progress')">Handle</button>
+                    <button class="btn-success" style="padding:4px 10px;font-size:0.78rem;" onclick="updateTicketStatus({{ t.id }},'resolved')">Resolve</button>
+                  </td>
+                </tr>
+                {%- else %}
+                <tr><td colspan="7" style="text-align:center;color:var(--c-text3);padding:24px;">No support tickets yet</td></tr>
+                {%- endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SETTINGS SECTION ── -->
+      <section data-content-section="settings" class="hidden">
+        <div class="dash-grid">
+
+          <!-- Profile Update -->
+          <div class="card">
+            <div class="card-header"><h3>Profile Information</h3></div>
+            <div class="card-body">
+              <div style="display:flex;align-items:center;gap:var(--gap-lg);margin-bottom:var(--gap-xl);">
+                <div class="avatar admin" data-user-avatar style="cursor:default;">{{ current_user.name[:2].upper() if current_user else "AK" }}</div>
+                <div>
+                  <div style="font-family:var(--font-head);font-size:1.1rem;font-weight:600;color:#fff;" data-user-name>{{ current_user.name if current_user else "Admin User" }}</div>
+                  <div class="text-muted font-mono" style="font-size:0.8rem;" data-user-email>{{ current_user.email if current_user else "" }}</div>
+                  <div class="profile-role role-admin" data-role-badge style="margin-top:4px;">Admin</div>
+                </div>
+              </div>
+              <form id="profileUpdateForm">
+              <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" type="text" name="name" value="{{ current_user.name if current_user else '' }}" data-user-name required></div>
+              <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" value="{{ current_user.email if current_user else '' }}" readonly data-user-email></div>
+              <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" name="phone" placeholder="+254 7XX XXX XXX"></div>
+              <div class="form-group"><label class="form-label">Organization</label><input class="form-input" type="text" name="org" value="{{ current_user.org if current_user else '' }}" placeholder="Organization"></div>
+              <button type="submit" class="btn-primary">Update Profile</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Change Password + System Settings -->
+          <div style="display:flex;flex-direction:column;gap:var(--gap-lg);">
+
+            <div class="card">
+              <div class="card-header"><h3>Change Password</h3></div>
+              <div class="card-body">
+                <form id="changePwdForm">
+                <div class="form-group"><label class="form-label">Current Password</label><input class="form-input" type="password" name="current_password" placeholder="••••••••"></div>
+                <div class="form-group"><label class="form-label">New Password</label><input class="form-input" type="password" name="new_password" placeholder="Min 8 characters"></div>
+                <div class="form-group"><label class="form-label">Confirm New Password</label><input class="form-input" type="password" name="confirm_password" placeholder="Repeat new password"></div>
+                <button type="submit" class="btn-primary">Change Password</button>
+                </form>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><h3>Security Configuration</h3></div>
+              <div class="card-body">
+                <div class="form-group"><label class="form-label">Max Login Attempts</label><input class="form-input" type="number" value="5"></div>
+                <div class="form-group"><label class="form-label">Session Timeout (min)</label><input class="form-input" type="number" value="30"></div>
+                <div class="check-group" style="margin-bottom:var(--gap-md);">
+                  <input type="checkbox" id="auditAll" class="check-input" checked>
+                  <label for="auditAll" class="check-label">Log all user actions</label>
+                </div>
+                <button type="button" class="btn-primary" style="margin-top:var(--gap-sm);" onclick="window.KCS&&window.KCS.ui&&window.KCS.ui.showToast('Security settings saved.','success')">Save Settings</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ADD USER MODAL (hidden by default) -->
+<div id="addUserModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:var(--c-surface);border:1px solid var(--c-border2);border-radius:var(--r-lg);padding:var(--gap-xl);width:100%;max-width:480px;">
+    <h3 style="font-family:var(--font-head);font-size:1.2rem;color:#fff;margin-bottom:var(--gap-lg);">Add New User</h3>
+    <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" type="text" placeholder="Full name"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="email@example.com"></div>
+    <div class="form-group">
+      <label class="form-label">Role</label>
+      <select class="form-input form-select">
+        <option value="client">Client</option>
+        <option value="staff">Staff</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Temporary Password</label><input class="form-input" type="password" placeholder="Min 8 characters"></div>
+    <div style="display:flex;gap:var(--gap-md);justify-content:flex-end;margin-top:var(--gap-lg);">
+      <button class="btn-ghost" onclick="document.getElementById('addUserModal').style.display='none'">Cancel</button>
+      <button class="btn-primary" id="createUserBtn">Create User</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+<script src="{{ url_for('static', filename='js/security.js') }}"></script>
+
+<script>
+// Create User modal - wired to POST /api/users
+var createUserBtn = document.getElementById('createUserBtn');
+if (createUserBtn) {
+  createUserBtn.addEventListener('click', function() {
+    var nameEl  = document.querySelector('#addUserModal input[type="text"]');
+    var emailEl = document.querySelector('#addUserModal input[type="email"]');
+    var roleEl  = document.querySelector('#addUserModal select');
+    var pwdEl   = document.querySelector('#addUserModal input[type="password"]');
+
+    var name     = nameEl  ? nameEl.value.trim()  : '';
+    var email    = emailEl ? emailEl.value.trim()  : '';
+    var role     = roleEl  ? roleEl.value          : 'client';
+    var password = pwdEl   ? pwdEl.value           : '';
+
+    if (!name || !email || password.length < 8) {
+      if (window.KCS && window.KCS.ui) {
+        window.KCS.ui.showToast('Name, email, and password (min 8 chars) required.', 'danger');
+      }
+      return;
+    }
+
+    // Get CSRF token
+    var csrf = '';
+    var meta = document.querySelector('meta[name="csrf-token"]');
+    if (meta) csrf = meta.getAttribute('content');
+    if (!csrf) {
+      var inp = document.querySelector('input[name="csrf_token"]');
+      if (inp) csrf = inp.value;
+    }
+
+    createUserBtn.textContent = 'Creating…';
+    createUserBtn.disabled = true;
+
+    fetch('/api/users', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf },
+      body: JSON.stringify({ name: name, email: email, role: role, password: password, org: '' })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      createUserBtn.textContent = 'Create User';
+      createUserBtn.disabled = false;
+      if (d.ok) {
+        document.getElementById('addUserModal').style.display = 'none';
+        if (window.KCS && window.KCS.ui) window.KCS.ui.showToast(d.message, 'success');
+        // Clear form fields
+        if (nameEl)  nameEl.value  = '';
+        if (emailEl) emailEl.value = '';
+        if (pwdEl)   pwdEl.value   = '';
+        // Reload page to show new user in table
+        setTimeout(function() { window.location.reload(); }, 1500);
+      } else {
+        if (window.KCS && window.KCS.ui) window.KCS.ui.showToast(d.error || 'Failed to create user', 'danger');
+      }
+    })
+    .catch(function(err) {
+      createUserBtn.textContent = 'Create User';
+      createUserBtn.disabled = false;
+      if (window.KCS && window.KCS.ui) window.KCS.ui.showToast('Network error: ' + err, 'danger');
+    });
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Portal — Kibe CyberShield</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+<div id="flashMessages" style="display:none;"></div>
+
+<script>
+  (function(){
+    const auth = sessionStorage.getItem('kcs_auth');
+    const user = JSON.parse(sessionStorage.getItem('kcs_user') || 'null');
+    if (!auth || !user) { window.location.href = 'login.html'; }
+  })();
+</script>
+
+<div class="app-body">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="sidebar-brand">
+        <div class="brand-icon small"><svg viewBox="0 0 40 40" fill="none"><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/><path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        KCS Platform
+      </a>
+      <button class="sidebar-close" id="sidebarClose">✕</button>
+    </div>
+    <div class="sidebar-profile">
+      <div class="profile-mini">
+        <div class="avatar client" data-user-avatar></div>
+        <div class="profile-info">
+          <div class="profile-name" data-user-name></div>
+          <div class="profile-role role-client" data-role-badge>Client</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">My Portal</div>
+        <a href="#" class="sidebar-link active" data-section="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span class="link-text">Dashboard</span></a>
+        <a href="#" class="sidebar-link" data-section="services"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="link-text">My Services</span></a>
+        <a href="#" class="sidebar-link" data-section="request"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><span class="link-text">Request Service</span></a>
+        <a href="#" class="sidebar-link" data-section="incidents"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg><span class="link-text">Report Incident</span></a>
+        <a href="#" class="sidebar-link" data-section="upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span class="link-text">Upload Files</span></a>
+        <a href="#" class="sidebar-link" data-section="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="link-text">Notifications</span><span class="link-badge">3</span></a>
+        <a href="#" class="sidebar-link" data-section="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="link-text">My Profile</span></a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="login.html" data-logout class="sidebar-link logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg><span class="link-text">Sign Out</span></a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebarToggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <span class="topbar-title" id="topbarTitle">Client Portal</span>
+      </div>
+      <div class="topbar-right">
+          <div style="display:flex;flex-direction:column;align-items:flex-end;margin-right:var(--gap-md);line-height:1.3;">
+            <span id="topbarClock" class="live-clock font-mono" style="font-size:0.875rem;color:var(--c-text1);font-weight:500;">--:--:--</span>
+            <span id="topbarDate"  class="live-date  font-mono" style="font-size:0.72rem; color:var(--c-text3);">Loading...</span>
+          </div>
+        <span class="topbar-time" id="topbarTime"></span>
+        <button class="icon-btn" title="Notifications" data-section="notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="notif-count">3</span>
+        </button>
+        <div class="avatar client" data-user-avatar style="cursor:default;"></div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- DASHBOARD -->
+      <section data-content-section="dashboard">
+        <div class="stats-row">
+          <div class="stat-card s-cyan"><div class="stat-card-header"><div class="stat-icon cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div></div><div class="stat-value" data-counter=""></div><div class="stat-label">Active Services</div></div>
+          <div class="stat-card s-yellow"><div class="stat-card-header"><div class="stat-icon yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg></div></div><div class="stat-value" data-counter=""></div><div class="stat-label">Open Tickets</div></div>
+          <div class="stat-card s-green"><div class="stat-card-header"><div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div></div><div class="stat-value" data-counter="">0</div><div class="stat-label">Resolved Issues</div></div>
+          <div class="stat-card s-blue"><div class="stat-card-header"><div class="stat-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.63 19.79 19.79 0 01.11 4 2 2 0 012.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.41 6.41l1.46-1.46a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div></div><div class="stat-value">24/7</div><div class="stat-label">Support Access</div></div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-header"><h3>Security Status</h3></div>
+            <div class="card-body">
+              <div class="security-score">
+                <div class="score-ring-wrap">
+                  <svg class="score-ring" viewBox="0 0 120 120">
+                    <circle class="score-ring-bg" cx="60" cy="60" r="54"/>
+                    <circle class="score-ring-fill" id="scoreRingFill" cx="60" cy="60" r="54" stroke-dasharray="0 339.3"/>
+                  </svg>
+                  <div class="score-number">92</div>
+                </div>
+                <div class="score-label">Security Score</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:var(--gap-lg);">
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:0.8rem;color:var(--c-text2);">Firewall</span><span class="text-green font-mono" style="font-size:0.75rem;">Active</span></div><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:0.8rem;color:var(--c-text2);">Antivirus</span><span class="text-green font-mono" style="font-size:0.75rem;">Updated</span></div><div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:0.8rem;color:var(--c-text2);">Patches</span><span class="text-yellow font-mono" style="font-size:0.75rem;">3 Pending</span></div><div class="progress-bar"><div class="progress-fill yellow" style="width:75%"></div></div></div>
+                <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:0.8rem;color:var(--c-text2);">Encryption</span><span class="text-green font-mono" style="font-size:0.75rem;">Enabled</span></div><div class="progress-bar"><div class="progress-fill cyan" style="width:100%"></div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>Notifications</h3></div>
+            <div class="notif-list" id="notifList"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>Quick Actions</h3></div>
+          <div class="card-body">
+            <div class="quick-actions">
+              <a href="#" class="quick-action" data-section="request"><div class="qa-icon" style="background:rgba(0,194,255,0.12);color:var(--c-cyan);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div><span class="qa-label">New Request</span></a>
+              <a href="#" class="quick-action" data-section="incidents"><div class="qa-icon" style="background:rgba(239,68,68,0.12);color:var(--c-red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div><span class="qa-label">Report Incident</span></a>
+              <a href="#" class="quick-action" data-section="upload"><div class="qa-icon" style="background:rgba(34,197,94,0.12);color:var(--c-green);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><span class="qa-label">Upload File</span></a>
+              <a href="#" class="quick-action" data-section="profile"><div class="qa-icon" style="background:rgba(168,85,247,0.12);color:var(--c-purple);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="qa-label">Profile</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MY SERVICES -->
+      <section data-content-section="services" class="hidden">
+        <div class="card">
+          <div class="card-header"><h3>My Active Services</h3></div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>Service</th><th>Plan</th><th>Status</th><th>Expires</th><th>Action</th></tr></thead>
+              <tbody>
+                
+                <tr>
+                  <td></td>
+                  <td><span class="badge badge-info"></span></td>
+                  <td><span class="badge badge-successbadge-warningbadge-info"></span></td>
+                  <td class="font-mono text-muted"></td>
+                  <td><button class="btn-ghost" style="padding:4px 12px;font-size:0.78rem;" data-action="view" data-id="">Details</button></td>
+                </tr>
+                
+                <tr><td colspan="5" style="text-align:center;color:var(--c-text3);padding:20px;">No active services yet. <a href="#" data-section="request" style="color:var(--c-cyan);">Request one →</a></td></tr>
+                
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- REQUEST SERVICE -->
+      <section data-content-section="request" class="hidden">
+        <div class="card" style="max-width:600px;">
+          <div class="card-header"><h3>Request a Service</h3></div>
+          <div class="card-body">
+            <form id="serviceForm">
+              <div class="form-group">
+                <label class="form-label">Service Type</label>
+                <select name="service" class="form-input form-select" required>
+                  <option value="">— Select a service —</option>
+                  <option>Cybersecurity Protection</option>
+                  <option>Threat Monitoring</option>
+                  <option>Incident Response</option>
+                  <option>Network Defense</option>
+                  <option>Cloud Security</option>
+                  <option>Data Protection</option>
+                  <option>Security Training</option>
+                  <option>Security Consulting</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Priority</label>
+                <select name="priority" class="form-input form-select">
+                  <option>Low</option><option>Medium</option><option>High</option><option>Urgent</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-textarea form-input" rows="4" placeholder="Describe your requirements…" required></textarea>
+              </div>
+              <button type="submit" class="btn-primary">Submit Request</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- REPORT INCIDENT -->
+      <section data-content-section="incidents" class="hidden">
+        
+        <div class="card" style="margin-bottom:var(--gap-lg);">
+          <div class="card-header">
+            <h3>My Reported Incidents</h3>
+            <span class="badge badge-info font-mono"></span>
+          </div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Title</th><th>Severity</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody>
+                
+                <tr>
+                  <td class="font-mono text-muted">INC-</td>
+                  <td></td>
+                  <td><span class="badge badge-dangerbadge-warningbadge-infobadge-success"></span></td>
+                  <td><span class="badge badge-warningbadge-successbadge-infobadge-success"></span></td>
+                  <td class="font-mono text-muted"></td>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="card" style="max-width:600px;">
+          <div class="card-header"><h3>Report New Incident</h3></div>
+          <div class="card-body">
+            <form id="incidentForm">
+              <div class="form-group">
+                <label class="form-label">Incident Title *</label>
+                <input type="text" name="title" class="form-input" placeholder="Brief title of the incident" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Severity *</label>
+                <select name="severity" class="form-input form-select" required>
+                  <option value="">— Select severity —</option>
+                  <option value="low">Low — Minor issue</option>
+                  <option value="medium">Medium — Service disruption</option>
+                  <option value="high">High — Data at risk</option>
+                  <option value="critical">Critical — Breach in progress</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description *</label>
+                <textarea name="description" class="form-textarea form-input" rows="5" placeholder="Describe what happened, when, and what systems are affected…" required></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Affected Systems</label>
+                <input type="text" name="systems" class="form-input" placeholder="e.g., web server, employee laptops">
+              </div>
+              <button type="submit" class="btn-primary">Submit Report</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- UPLOAD FILES -->
+      <section data-content-section="upload" class="hidden">
+        <div class="card" style="max-width:600px;">
+          <div class="card-header"><h3>Upload Files</h3></div>
+          <div class="card-body">
+            <p class="text-muted" style="margin-bottom:var(--gap-lg);font-size:0.9rem;">Upload log files, screenshots, or evidence related to security incidents or service requests.</p>
+            <div class="upload-zone" id="uploadZone">
+              <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+              <div class="upload-title">Drop files here or click to browse</div>
+              <div class="upload-sub">Supports: PDF, PNG, JPG, ZIP, LOG — Max 50MB per file</div>
+              <input type="file" id="fileInput" multiple style="display:none;" accept=".pdf,.png,.jpg,.jpeg,.zip,.log,.txt">
+            </div>
+            <div class="upload-list" id="uploadList"></div>
+            <button class="btn-primary" style="margin-top:var(--gap-lg);width:100%;" id="uploadSubmitBtn" type="button">Upload Files</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section data-content-section="notifications" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <h3>Notifications</h3>
+            <button style="font-size:0.8rem;color:var(--c-cyan);background:none;border:none;cursor:pointer;" data-mark-all-read="notifPanelList">Mark all read</button>
+          </div>
+          <div class="notif-list" id="notifPanelList"></div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section data-content-section="profile" class="hidden">
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-header"><h3>Profile Information</h3></div>
+            <div class="card-body">
+              <div style="display:flex;align-items:center;gap:var(--gap-lg);margin-bottom:var(--gap-xl);">
+                <div class="avatar client lg" data-user-avatar></div>
+                <div>
+                  <div style="font-family:var(--font-head);font-size:1.2rem;font-weight:600;color:#fff;" data-user-name>Client User</div>
+                  <div class="text-muted font-mono" style="font-size:0.8rem;" data-user-email></div>
+                  <div class="profile-role role-client" data-role-badge style="margin-top:4px;">Client</div>
+                </div>
+              </div>
+              <form id="profileUpdateForm">
+              <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" type="text" name="name" value="" data-user-name required></div>
+              <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" value="" readonly data-user-email></div>
+              <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" name="phone" placeholder="+254 7XX XXX XXX"></div>
+              <div class="form-group"><label class="form-label">Organization</label><input class="form-input" type="text" name="org" value="" data-user-org placeholder="Your organization"></div>
+              <button type="submit" class="btn-primary">Update Profile</button>
+              </form>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Change Password</h3></div>
+            <div class="card-body">
+              <form id="changePwdForm">
+              <div class="form-group"><label class="form-label">Current Password</label><input class="form-input" type="password" name="current_password" placeholder="••••••••"></div>
+              <div class="form-group"><label class="form-label">New Password</label><input class="form-input" type="password" name="new_password" placeholder="Min 8 characters"></div>
+              <div class="form-group"><label class="form-label">Confirm New Password</label><input class="form-input" type="password" name="confirm_password" placeholder="Repeat new password"></div>
+              <button type="submit" class="btn-primary">Change Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+
+
+
+
+
+
+  <script src="js/auth.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/security.js"></script>
+</body>
+</html>

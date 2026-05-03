@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kibe CyberShield Platform - Enterprise Cybersecurity & AI Operations">
+  <meta name="theme-color" content="#0B132B">
+  <title>Kibe CyberShield Platform</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body class="page-home">
+{%- with messages = get_flashed_messages(with_categories=true) %}
+{%- if messages %}
+<div id="flashMessages" style="position:fixed;top:80px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:380px;">
+  {%- for category, message in messages %}
+  <div class="alert alert-{{ category }}" style="box-shadow:0 8px 32px rgba(0,0,0,0.4);padding:12px 16px;border-radius:8px;font-size:0.875rem;">{{ message }}</div>
+  {%- endfor %}
+</div>
+<script>setTimeout(function(){var el=document.getElementById('flashMessages');if(el){el.style.opacity='0';el.style.transition='opacity 0.5s';setTimeout(function(){el.remove();},500);}},4000);</script>
+{%- endif %}
+{%- endwith %}
+
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="{{ url_for('index') }}" class="nav-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 40 40" fill="none">
+          <path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/>
+          <path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/>
+          <path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="brand-name">Kibe<span class="accent">Cyber</span>Shield</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="{{ url_for('index') }}" class="nav-link active">Home</a>
+      <a href="{{ url_for('services') }}" class="nav-link">Services</a>
+      <a href="{{ url_for('about') }}" class="nav-link">About</a>
+      <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+      <a href="{{ url_for('login') }}" class="nav-btn-outline">Login</a>
+      <a href="{{ url_for('register') }}" class="nav-btn-solid">Get Started</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="grid-overlay"></div>
+    <div class="glow-orb glow-1"></div>
+    <div class="glow-orb glow-2"></div>
+    <div class="scan-line"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      <span>Enterprise Cybersecurity Platform</span>
+    </div>
+    <h1 class="hero-title">
+      Defend. Detect.<br>
+      <span class="title-accent">Neutralize.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Next-generation cybersecurity intelligence for businesses, governments, 
+      and organizations across Africa and beyond.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('register') }}" class="btn-primary">Start Protection</a>
+      <a href="{{ url_for('services') }}" class="btn-ghost">Explore Services</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">99.9%</span><span class="stat-label">Uptime SLA</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Monitoring</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">&lt;60s</span><span class="stat-label">Response Time</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="shield-display">
+      <div class="shield-ring ring-1"></div>
+      <div class="shield-ring ring-2"></div>
+      <div class="shield-ring ring-3"></div>
+      <div class="shield-core">
+        <svg viewBox="0 0 80 80" fill="none">
+          <path d="M40 4L8 20v24c0 18.8 13.6 36.4 32 40 18.4-3.6 32-21.2 32-40V20L40 4z" fill="#00C2FF" opacity="0.1"/>
+          <path d="M40 4L8 20v24c0 18.8 13.6 36.4 32 40 18.4-3.6 32-21.2 32-40V20L40 4z" stroke="#00C2FF" stroke-width="2"/>
+          <path d="M28 40l8 8 16-16" stroke="#00C2FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="orbit-dot dot-1"></div>
+      <div class="orbit-dot dot-2"></div>
+      <div class="orbit-dot dot-3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES PREVIEW ===== -->
+<section class="services-preview section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">What We Do</span>
+      <h2 class="section-title">Comprehensive Security Services</h2>
+      <p class="section-desc">From threat monitoring to incident response — complete protection for your digital assets.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Cybersecurity Protection</h3>
+        <p>Multi-layered defense systems protecting your infrastructure from advanced persistent threats.</p>
+        <a href="{{ url_for('services') }}" class="card-link">Learn more →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-cyan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <h3>Threat Monitoring</h3>
+        <p>Real-time AI-powered threat detection with 24/7 SOC coverage and instant alerts.</p>
+        <a href="{{ url_for('services') }}" class="card-link">Learn more →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        </div>
+        <h3>Incident Response</h3>
+        <p>Rapid containment and remediation by certified cybersecurity responders.</p>
+        <a href="{{ url_for('services') }}" class="card-link">Learn more →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-yellow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+        </div>
+        <h3>Cloud Security</h3>
+        <p>Zero-trust cloud architecture and continuous compliance monitoring.</p>
+        <a href="{{ url_for('services') }}" class="card-link">Learn more →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-red">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v11m0 0h10m-10 0a2 2 0 002 2h8a2 2 0 002-2m-10 0V9m10 5V9m0 0H9"/></svg>
+        </div>
+        <h3>Digital Forensics</h3>
+        <p>Advanced forensic analysis and evidence collection for cybercrime investigations.</p>
+        <a href="{{ url_for('services') }}" class="card-link">Learn more →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <h3>Security Training</h3>
+        <p>Comprehensive cybersecurity awareness programs for teams and organizations.</p>
+        <a href="{{ url_for('services') }}" class="card-link">Learn more →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY US ===== -->
+<section class="why-us section">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-text">
+        <span class="section-tag">Why Choose Us</span>
+        <h2 class="section-title">Built for Africa's Digital Future</h2>
+        <p>Kibe CyberShield Technologies Ltd is headquartered in Nakuru, Kenya — purpose-built to address the unique cybersecurity challenges facing African enterprises, governments, and institutions.</p>
+        <ul class="why-list">
+          <li><span class="check">✓</span> Kenya-based, globally-certified security experts</li>
+          <li><span class="check">✓</span> Compliant with local and international data regulations</li>
+          <li><span class="check">✓</span> AI-powered threat intelligence engine</li>
+          <li><span class="check">✓</span> Sector-specific solutions for healthcare, finance & government</li>
+          <li><span class="check">✓</span> Affordable enterprise-grade protection</li>
+        </ul>
+        <a href="{{ url_for('about') }}" class="btn-primary">Our Story</a>
+      </div>
+      <div class="why-visual">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span class="t-dot red"></span>
+            <span class="t-dot yellow"></span>
+            <span class="t-dot green"></span>
+            <span class="t-title">threat-monitor.sh</span>
+          </div>
+          <div class="terminal-body">
+            <div class="t-line"><span class="t-green">●</span> Scanning network perimeter...</div>
+            <div class="t-line"><span class="t-cyan">[INFO]</span> 1,247 endpoints monitored</div>
+            <div class="t-line"><span class="t-green">[OK]</span> Firewall rules: Active (247)</div>
+            <div class="t-line"><span class="t-yellow">[WARN]</span> Suspicious traffic: 3.14.0.1</div>
+            <div class="t-line"><span class="t-red">[ALERT]</span> Blocking IP: 192.168.47.99</div>
+            <div class="t-line"><span class="t-green">[OK]</span> Threat neutralized in 0.8s</div>
+            <div class="t-line"><span class="t-cyan">[INFO]</span> Security score: 98/100</div>
+            <div class="t-line t-blink"><span class="t-green">$</span> <span class="cursor">_</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-glow"></div>
+      <h2>Secure Your Organization Today</h2>
+      <p>Join hundreds of businesses across East Africa protected by Kibe CyberShield.</p>
+      <div class="cta-actions">
+        <a href="{{ url_for('register') }}" class="btn-primary">Create Free Account</a>
+        <a href="{{ url_for('contact') }}" class="btn-ghost">Talk to an Expert</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="brand-icon small">
+            <svg viewBox="0 0 40 40" fill="none"><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" fill="#00C2FF" opacity="0.15"/><path d="M20 2L4 10v12c0 9.4 6.8 18.2 16 20 9.2-1.8 16-10.6 16-20V10L20 2z" stroke="#00C2FF" stroke-width="1.5" fill="none"/><path d="M14 20l4 4 8-8" stroke="#00C2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span>Kibe CyberShield</span>
+        </div>
+        <p>Enterprise cybersecurity and AI security services for Africa's digital economy.</p>
+        <div class="footer-contact">
+          <div><span>📧</span> aggreykwamboka62@gmail.com</div>
+          <div><span>📞</span> +254 714 134 241</div>
+          <div><span>📍</span> Nakuru, Kenya</div>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Platform</h4>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <a href="{{ url_for('services') }}">All Services</a>
+        <a href="{{ url_for('services') }}#monitoring">Threat Monitoring</a>
+        <a href="{{ url_for('services') }}#forensics">Digital Forensics</a>
+        <a href="{{ url_for('services') }}#training">Training</a>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <a href="{{ url_for('about') }}">About Us</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Kibe CyberShield Technologies Ltd. All rights reserved. | Owner: Aggrey Kibe Kwamboka</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+</body>
+</html>

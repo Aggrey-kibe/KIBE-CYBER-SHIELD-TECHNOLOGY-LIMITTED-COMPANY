@@ -1,0 +1,183 @@
+/* ============================================================
+   KIBE CYBERSHIELD — RESPONSIVE STYLES
+   ============================================================ */
+
+/* ── TABLET (≤1024px) ── */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; padding: 120px var(--gap-lg) 60px; }
+  .hero-visual { display: none; }
+  .hero-title { font-size: 2.8rem; }
+  .why-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .dash-grid.three { grid-template-columns: 1fr 1fr; }
+  .quick-actions { grid-template-columns: repeat(2, 1fr); }
+  .container { padding: 0 var(--gap-lg); }
+  .auth-split { grid-template-columns: 1fr; }
+  .auth-visual { display: none; }
+}
+
+/* ── MOBILE (≤768px) ── */
+@media (max-width: 768px) {
+  :root { font-size: 15px; }
+
+  /* Navbar */
+  .nav-links {
+    display: none; position: fixed; inset: 0; top: 68px;
+    background: rgba(8,14,33,0.98); backdrop-filter: blur(20px);
+    flex-direction: column; align-items: stretch;
+    padding: var(--gap-xl) var(--gap-lg); gap: var(--gap-sm);
+    border-top: 1px solid var(--c-border); z-index: 999;
+  }
+  .nav-links.open { display: flex; }
+  .nav-link { padding: 14px 0; font-size: 1rem; border-bottom: 1px solid var(--c-border); }
+  .nav-btn-outline, .nav-btn-solid { text-align: center; padding: 14px; border-radius: var(--r-md); }
+  .nav-toggle { display: flex; }
+
+  /* Hero */
+  .hero { padding: 100px var(--gap-md) 60px; }
+  .hero-title { font-size: 2.2rem; }
+  .hero-stats { flex-wrap: wrap; gap: var(--gap-lg); }
+  .stat-divider { display: none; }
+
+  /* Sections */
+  .services-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: var(--gap-xl); }
+  .section { padding: 48px 0; }
+  .container { padding: 0 var(--gap-md); }
+
+  /* Dashboard */
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    transform: translateX(-100%); z-index: 300;
+    transition: transform var(--transition-slow);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-close { display: flex; }
+  .main-content { width: 100%; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .dash-grid { grid-template-columns: 1fr; }
+  .dash-grid.three { grid-template-columns: 1fr; }
+  .col-span-2 { grid-column: span 1; }
+  .page-content { padding: var(--gap-md); }
+  .topbar { padding: 0 var(--gap-md); }
+  .topbar-time { display: none; }
+  .quick-actions { grid-template-columns: repeat(2, 1fr); }
+  .cta-actions { flex-direction: column; }
+}
+
+/* ── SMALL MOBILE (≤480px) ── */
+@media (max-width: 480px) {
+  .hero-title { font-size: 1.9rem; }
+  .stats-row { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn-primary, .hero-actions .btn-ghost { text-align: center; }
+  .auth-card { padding: var(--gap-xl) var(--gap-lg); }
+  .data-table { font-size: 0.8rem; }
+  .data-table th, .data-table td { padding: 10px 10px; }
+}
+
+/* ── PRINT ── */
+@media print {
+  .sidebar, .topbar, .navbar, .footer { display: none; }
+  .main-content { width: 100%; }
+  body { background: white; color: black; }
+}
+
+/* ============================================================
+   ADDITIONAL PRODUCTION FIXES
+   ============================================================ */
+
+/* Fix details/summary element styling for demo login */
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] > summary { border-radius: var(--r-sm) var(--r-sm) 0 0; }
+
+/* Ensure hidden sections are truly hidden */
+.hidden { display: none !important; }
+[data-content-section].hidden { display: none !important; }
+
+/* Fix table overflow on mobile */
+.card-body { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Fix sidebar on mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1);
+  }
+  .sidebar.open { transform: translateX(0); box-shadow: 8px 0 32px rgba(0,0,0,.5); }
+  .main-content { width: 100%; }
+
+  /* Fix stat cards on small mobile */
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .stat-value { font-size: 1.5rem; }
+
+  /* Stack page header on mobile */
+  .page-header { padding: 100px var(--gap-md) 40px; }
+  .page-header h1 { font-size: 1.8rem; }
+
+  /* Fix dashboard grid */
+  .dash-grid { grid-template-columns: 1fr; }
+  .col-span-2 { grid-column: span 1; }
+
+  /* Fix quick actions */
+  .quick-actions { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Fix topbar on very small screens */
+@media (max-width: 380px) {
+  .topbar-title { font-size: 0.9rem; }
+  .stats-row { grid-template-columns: 1fr; }
+  .hero-title { font-size: 1.7rem; }
+}
+
+/* Improve toast animation */
+.kcs-toast {
+  animation: slideInUp 0.3s ease forwards;
+}
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Fix form select arrow */
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+/* Improve table on mobile - horizontal scroll */
+@media (max-width: 640px) {
+  .data-table th, .data-table td { padding: 10px 10px; font-size: 0.8rem; }
+}
+
+/* Fix modal z-index */
+#addUserModal { z-index: 10000 !important; }
+
+/* Fix profile section alignment */
+.profile-mini { user-select: none; }
+
+/* Improve link focus states */
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--c-cyan);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Fix terminal on mobile */
+@media (max-width: 768px) {
+  .terminal { font-size: 0.75rem; }
+  .t-line { font-size: 0.75rem; }
+}
+
+/* Services grid responsive */
+@media (max-width: 900px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .services-grid { grid-template-columns: 1fr; }
+}

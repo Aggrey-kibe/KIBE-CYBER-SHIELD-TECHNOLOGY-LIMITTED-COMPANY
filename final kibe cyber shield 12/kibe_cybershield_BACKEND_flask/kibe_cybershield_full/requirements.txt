@@ -1,0 +1,19 @@
+# ============================================================
+# KIBE CYBERSHIELD PLATFORM — Python Dependencies
+# ============================================================
+
+# Core
+Flask==3.0.3
+Werkzeug==3.0.3
+
+# Production WSGI server
+gunicorn==21.2.0
+
+# Optional: Load .env files automatically
+# python-dotenv==1.0.0
+
+# Optional: PostgreSQL for production database
+# psycopg2-binary==2.9.9
+
+# Optional: Email sending (for password reset)
+# Flask-Mail==0.10.0
